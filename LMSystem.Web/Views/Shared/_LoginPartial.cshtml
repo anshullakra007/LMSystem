@@ -1,0 +1,31 @@
+@using Microsoft.AspNetCore.Identity
+@using LMSystem.Web.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav flex-row align-items-center gap-3">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark fw-bold" asp-controller="Account" asp-action="Manage" title="Manage">
+            <i class="bi bi-person-circle me-1"></i> @User.Identity?.Name
+        </a>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline m-0 p-0" asp-controller="Account" asp-action="Logout" method="post">
+            <button type="submit" class="nav-link btn btn-link text-danger fw-bold" style="cursor: pointer;">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark fw-bold" asp-controller="Account" asp-action="Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark fw-bold" asp-controller="Account" asp-action="Login">Login</a>
+    </li>
+}
+</ul>

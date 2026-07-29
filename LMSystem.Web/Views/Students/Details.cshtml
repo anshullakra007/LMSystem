@@ -1,0 +1,54 @@
+@model LMSystem.Web.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Student Details";
+}
+<div class="row mb-4"><div class="col"><h2>Student Details</h2></div></div>
+<div class="card shadow-sm"><div class="card-body">
+    <dl class="row">
+        <dt class="col-sm-3">Name</dt><dd class="col-sm-9">@Model.Name</dd>
+        <dt class="col-sm-3">Email</dt><dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Joined</dt><dd class="col-sm-9">@Model.CreatedAt.ToLocalTime().ToString("MMM dd, yyyy")</dd>
+    </dl>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </div>
+
+    <h4 class="mt-5 mb-3">Borrow History</h4>
+    @if (ViewBag.BorrowHistory != null)
+    {
+        var history = (IEnumerable<dynamic>)ViewBag.BorrowHistory;
+        if (history.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Status</th>
+                        <th>Issue Date</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Fine</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var record in history)
+                    {
+                        <tr>
+                            <td>@record.BookTitle</td>
+                            <td>@record.Status</td>
+                            <td>@(record.Status != "Requested" ? record.IssueDate.ToLocalTime().ToString("MMM dd, yyyy") : "-")</td>
+                            <td>@(record.Status != "Requested" ? record.DueDate.ToLocalTime().ToString("MMM dd, yyyy") : "-")</td>
+                            <td>@(record.ReturnDate != null ? record.ReturnDate.ToLocalTime().ToString("MMM dd, yyyy") : "-")</td>
+                            <td class="@(record.FineAmount > 0 ? "text-danger fw-bold" : "")">@record.FineAmount.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No borrow history found for this student.</p>
+        }
+    }
+</div></div>

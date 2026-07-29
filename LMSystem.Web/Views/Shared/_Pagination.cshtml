@@ -1,0 +1,31 @@
+@model dynamic
+
+@{
+    int currentPage = ViewBag.CurrentPage as int? ?? 1;
+    int totalPages = ViewBag.TotalPages as int? ?? 1;
+    string? searchTerm = ViewBag.CurrentSearch as string;
+    string? actionName = ViewContext.RouteData.Values["Action"]?.ToString();
+    string? controllerName = ViewContext.RouteData.Values["Controller"]?.ToString();
+}
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-controller="@controllerName" asp-action="@actionName" asp-route-page="@(currentPage - 1)" asp-route-searchTerm="@searchTerm">Previous</a>
+            </li>
+            
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" asp-controller="@controllerName" asp-action="@actionName" asp-route-page="@i" asp-route-searchTerm="@searchTerm">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-controller="@controllerName" asp-action="@actionName" asp-route-page="@(currentPage + 1)" asp-route-searchTerm="@searchTerm">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

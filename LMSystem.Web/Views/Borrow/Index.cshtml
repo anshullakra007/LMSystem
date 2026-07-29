@@ -1,0 +1,120 @@
+@model IEnumerable<LMSystem.Web.Models.BorrowRecord>
+@{
+    ViewData["Title"] = "Borrow Records";
+}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2>Borrow Records</h2>
+    </div>
+    <div class="col-md-6">
+        @{ ViewData["SearchPlaceholder"] = "Search records by book, user, or status..."; }
+        <partial name="_SearchBar" />
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Book Title</th>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+                        {
+                            <th>Student</th>
+                        }
+                        <th>Status</th>
+                        <th>Issue Date</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Fine</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Book?.Title</td>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+                            {
+                                <td>@item.User?.Name (@item.User?.Email)</td>
+                            }
+                            <td>
+                                @if (item.Status == "Requested")
+                                {
+                                    <span class="badge bg-warning-light rounded-pill"><i class="bi bi-clock-history me-1"></i> Requested</span>
+                                }
+                                else if (item.Status == "Issued")
+                                {
+                                    if (item.DueDate < DateTime.UtcNow)
+                                    {
+                                        <span class="badge bg-danger-light rounded-pill"><i class="bi bi-exclamation-circle me-1"></i> Overdue</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-primary-light rounded-pill"><i class="bi bi-bookmark-check me-1"></i> Issued</span>
+                                    }
+                                }
+                                else if (item.Status == "Returned")
+                                {
+                                    <span class="badge bg-success-light rounded-pill"><i class="bi bi-check-circle me-1"></i> Returned</span>
+                                }
+                                else if (item.Status == "FinePaid")
+                                {
+                                    <span class="badge bg-success-light rounded-pill"><i class="bi bi-check-circle-fill me-1"></i> Paid</span>
+                                }
+                            </td>
+                            <td>@(item.Status != "Requested" ? item.IssueDate.ToLocalTime().ToString("MMM dd, yyyy") : "-")</td>
+                            <td>@(item.Status != "Requested" ? item.DueDate.ToLocalTime().ToString("MMM dd, yyyy") : "-")</td>
+                            <td>@(item.ReturnDate?.ToLocalTime().ToString("MMM dd, yyyy") ?? "-")</td>
+                            <td class="@(item.FineAmount > 0 ? "text-danger fw-bold" : "")">@item.FineAmount.ToString("C")</td>
+                            <td>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+                                {
+                                    @if (item.Status == "Requested")
+                                    {
+                                        <form asp-action="ApproveIssue" asp-route-id="@item.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Approve Issue"><i class="bi bi-check2"></i> Approve</button>
+                                        </form>
+                                    }
+                                    else if (item.Status == "Issued")
+                                    {
+                                        <form asp-action="Return" asp-route-id="@item.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-info" title="Return Book"><i class="bi bi-arrow-return-left"></i> Return</button>
+                                        </form>
+                                    }
+                                    else if (item.Status == "Returned" && item.FineAmount > 0)
+                                    {
+                                        <form asp-action="PayFine" asp-route-id="@item.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-warning" title="Pay Fine"><i class="bi bi-cash-coin"></i> Pay Fine</button>
+                                        </form>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                    <h4>No records found</h4>
+                                    <p>There are currently no borrowing records to display.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<partial name="_Pagination" />

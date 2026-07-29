@@ -1,0 +1,50 @@
+@model IEnumerable<LMSystem.Web.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Librarians";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Librarians</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-shield-plus me-1"></i> Register New Librarian</a>
+</div>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Name</th>
+                        <th>Email</th>
+                        <th>Joined Date</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">@item.Name</td>
+                            <td>@item.Email</td>
+                            <td>@item.CreatedAt.ToLocalTime().ToString("MMM dd, yyyy")</td>
+                            <td class="text-end pe-4">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="View Details"><i class="bi bi-eye"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger ms-1" title="Delete"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <h4>No librarians found</h4>
+                                    <p>Register a new librarian to manage the system.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

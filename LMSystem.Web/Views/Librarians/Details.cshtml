@@ -1,0 +1,15 @@
+@model LMSystem.Web.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Librarian Details";
+}
+<div class="row mb-4"><div class="col"><h2>Librarian Details</h2></div></div>
+<div class="card shadow-sm"><div class="card-body">
+    <dl class="row">
+        <dt class="col-sm-3">Name</dt><dd class="col-sm-9">@Model.Name</dd>
+        <dt class="col-sm-3">Email</dt><dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Joined</dt><dd class="col-sm-9">@Model.CreatedAt.ToLocalTime().ToString("MMM dd, yyyy")</dd>
+    </dl>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </div>
+</div></div>

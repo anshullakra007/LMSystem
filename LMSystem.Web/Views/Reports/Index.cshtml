@@ -1,0 +1,242 @@
+@model LMSystem.Web.ViewModels.ReportsViewModel
+@{
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Reports & Analytics</h2>
+    <div>
+        <button class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer me-2"></i>Print Report</button>
+    </div>
+</div>
+
+<!-- Stats Summary -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white h-100 border-0 shadow-sm hover-lift">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-2 opacity-75">Total Inventory</h6>
+                <h2 class="fw-bold mb-0">@Model.TotalBooks</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white h-100 border-0 shadow-sm hover-lift">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-2 opacity-75">Active Borrowings</h6>
+                <h2 class="fw-bold mb-0">@Model.TotalBorrowed</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white h-100 border-0 shadow-sm hover-lift">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-2 opacity-75">Overdue Books</h6>
+                <h2 class="fw-bold mb-0">@Model.OverdueBooks</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark h-100 border-0 shadow-sm hover-lift">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-2 opacity-75">Fine Collection</h6>
+                <h2 class="fw-bold mb-0">@Model.FineCollection.ToString("C")</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold">Inventory by Category</h5>
+            </div>
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <div style="width: 100%; max-width: 350px;">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold">Borrowings (Last 6 Months)</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="borrowingsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Tables -->
+<ul class="nav nav-tabs mb-4" id="reportTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-bold" id="overdue-tab" data-bs-toggle="tab" data-bs-target="#overdue" type="button" role="tab">Overdue Books</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-bold" id="popular-tab" data-bs-toggle="tab" data-bs-target="#popular" type="button" role="tab">Most Borrowed</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-bold" id="fines-tab" data-bs-toggle="tab" data-bs-target="#fines" type="button" role="tab">Recent Fines</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="reportTabsContent">
+    <!-- Overdue Tab -->
+    <div class="tab-pane fade show active" id="overdue" role="tabpanel">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Student</th>
+                                <th>Book</th>
+                                <th>Due Date</th>
+                                <th>Days Overdue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in Model.OverdueRecords)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@record.User</td>
+                                    <td>@record.Book</td>
+                                    <td>@record.DueDate.ToLocalTime().ToString("MMM dd, yyyy")</td>
+                                    <td><span class="badge bg-danger">@record.DaysOverdue days</span></td>
+                                </tr>
+                            }
+                            @if (!Model.OverdueRecords.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No overdue books right now. Great job!</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Books Tab -->
+    <div class="tab-pane fade" id="popular" role="tabpanel">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    @foreach (var book in Model.MostBorrowedBooks)
+                    {
+                        <li class="list-group-item px-4 py-3 d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold">@book.Book</span>
+                            <span class="badge bg-primary rounded-pill px-3 py-2">@book.TimesBorrowed borrows</span>
+                        </li>
+                    }
+                    @if (!Model.MostBorrowedBooks.Any())
+                    {
+                        <li class="list-group-item text-center py-4 text-muted">No borrowing data yet.</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Fines Tab -->
+    <div class="tab-pane fade" id="fines" role="tabpanel">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Student</th>
+                                <th>Amount Paid</th>
+                                <th>Date Collected</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var fine in Model.RecentFines)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@fine.User</td>
+                                    <td class="text-success fw-bold">@fine.Amount.ToString("C")</td>
+                                    <td>@fine.Date.ToLocalTime().ToString("MMM dd, yyyy")</td>
+                                </tr>
+                            }
+                            @if (!Model.RecentFines.Any())
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-muted">No fines collected recently.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Prepare Category Data
+            const catLabels = @Html.Raw(Json.Serialize(Model.BooksByCategory.Keys));
+            const catData = @Html.Raw(Json.Serialize(Model.BooksByCategory.Values));
+            const catColors = ['#4338ca', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
+
+            // Category Pie Chart
+            if(catLabels.length > 0) {
+                new Chart(document.getElementById('categoryChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: catLabels,
+                        datasets: [{
+                            data: catData,
+                            backgroundColor: catColors,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '65%',
+                        plugins: {
+                            legend: { position: 'right' }
+                        }
+                    }
+                });
+            }
+
+            // Prepare Borrowings Data
+            const monthLabels = @Html.Raw(Json.Serialize(Model.BorrowingsByMonth.Keys));
+            const monthData = @Html.Raw(Json.Serialize(Model.BorrowingsByMonth.Values));
+
+            // Borrowings Bar Chart
+            if(monthLabels.length > 0) {
+                new Chart(document.getElementById('borrowingsChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: monthLabels,
+                        datasets: [{
+                            label: 'Books Borrowed',
+                            data: monthData,
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

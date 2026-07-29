@@ -1,0 +1,17 @@
+@{
+    string actionName = ViewContext.RouteData.Values["Action"].ToString();
+    string controllerName = ViewContext.RouteData.Values["Controller"].ToString();
+    string placeholder = ViewData["SearchPlaceholder"]?.ToString() ?? "Search...";
+}
+
+<form asp-controller="@controllerName" asp-action="@actionName" method="get" class="d-flex w-100">
+    <div class="input-group">
+        <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+        <input type="text" name="searchTerm" class="form-control border-start-0 ps-0" placeholder="@placeholder" value="@(ViewBag.CurrentSearch as string)">
+        <button class="btn btn-primary px-4" type="submit">Search</button>
+        @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch as string))
+        {
+            <a asp-controller="@controllerName" asp-action="@actionName" class="btn btn-outline-secondary">Clear</a>
+        }
+    </div>
+</form>

@@ -1,0 +1,54 @@
+@model IEnumerable<LMSystem.Web.Models.BorrowRecord>
+@{
+    ViewData["Title"] = "Overdue Books";
+}
+
+<div class="row mb-4">
+    <div class="col">
+        <h2>Overdue Books Report</h2>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Book</th>
+                        <th>Student</th>
+                        <th>Due Date</th>
+                        <th>Days Overdue</th>
+                        <th>Current Fine Estimate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var overdueDays = (DateTime.UtcNow - item.DueDate).TotalDays;
+                        var estimatedFine = Math.Max(0, Math.Ceiling(overdueDays) * 10);
+                        <tr>
+                            <td>@item.Book?.Title</td>
+                            <td>@item.User?.Name (@item.User?.Email)</td>
+                            <td class="text-danger">@item.DueDate.ToLocalTime().ToString("MMM dd, yyyy")</td>
+                            <td class="text-danger fw-bold">@Math.Ceiling(overdueDays)</td>
+                            <td>@estimatedFine.ToString("C")</td>
+                        </tr>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="bi bi-emoji-smile text-success"></i>
+                                    <h4>No overdue books!</h4>
+                                    <p>All books have been returned on time.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
