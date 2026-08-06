@@ -1,149 +1,143 @@
-#  LMSy - Lby M Sy
+#  LMSystem - Library Management System
 
-![AS.NT C](://.l./b/AS.NT%20C-8.0-512BD4?yl=f--b&l=)
-![y Fwk C](://.l./b/y%20Fwk-C-35B3B?yl=f--b&l=u)
-![SQL](://.l./b/SQL-003B57?yl=f--b&l=ql&lCl=w)
-![U](://.l./b/U-T-?yl=f--b)
-![L](://.l./b/L-MIT-blu.v?yl=f--b)
-
-> **LMSy** full-fu Lby M Sy vl w **AS.NT C 8 MVC**. I l -- f yl lby u, lu u bw l, f lul, bu Rl-B A Cl (RBAC) l u bw , lby ff, u.
+> **LMSystem** is a full-featured Library Management System developed with **ASP.NET Core 8 MVC**. It handles the end-to-end process of managing physical library resources, including automated borrowing pipelines, fine calculations, and a robust Role-Based Access Control (RBAC) model distinguishing between administrators, library staff, and students.
 
 ---
 
-##  Tbl f C
-- [Fu](#-fu)
-- [Au & D ](#-u---)
-- [Db S & ](#-b---)
-- [G S](#--)
-- [Rl & Wkflw](#-l--wkflw)
-- [T Gu](#--u)
-- [Fuu ](#-fuu-)
+##  Table of Contents
+- [Features](#-features)
+- [Architecture & Design Patterns](#-architecture--design-patterns)
+- [Database Schema & Entities](#-database-schema--entities)
+- [Getting Started](#-getting-started)
+- [Roles & Workflows](#-roles--workflows)
+- [Testing Guide](#-testing-guide)
+- [Future Enhancements](#-future-enhancements)
 
 ---
 
-##  Fu
+##  Features
 
-- **Au Bw Sy**: Rqu, v, u, u bk lly.
-- **Au F Clul**: Aully k vu lul f y.
-- **Ivy M**: M l f Bk, Au, ubl, Mz, Nw.
-- **Rl-B Suy**: Dff f A, Lb, Su u AS.NT C Iy.
-- **U T**: Cv v u U, Mq, FluA.
-
----
-
-##  Au & D 
-
-T lu v w y :
-1. `LMSy.Wb`: T AS.NT C MVC wb l.
-2. `LMSy.T`: T U f ll, v, .
-
-**D Il:**
-- **MVC (Ml-Vw-Cll)**: S UI l HTT l.
-- **Ry **: D b u `IRy<T>` u l ly .
-- **Sv Ly**: ul bu l (`BkSv`, `BwSv`) k ll l.
-- **Dy I**: Sv v bul- DI .
+- **Automated Borrowing System**: Request, approve, issue, and return books seamlessly.
+- **Automated Fine Calculation**: Automatically tracks overdue items and calculates fines per day.
+- **Inventory Management**: Maintain detailed records of Books, Authors, Publishers, Magazines, and Newspapers.
+- **Role-Based Security**: Differentiated access for Admins, Librarians, and Students using ASP.NET Core Identity.
+- **Unit Tested**: Comprehensive test coverage using xUnit, Moq, and FluentAssertions.
 
 ---
 
-##  Db S & 
+##  Architecture & Design Patterns
 
-T y u **y Fwk C** w **SQL**. T f `AlDbC.`.
+The solution is divided into two primary projects:
+1. `LMSystem.Web`: The main ASP.NET Core MVC web application.
+2. `LMSystem.Tests`: The xUnit testing project for controllers, services, and repositories.
 
-### C 
-- **AlU**: `IyU`. M u fl.
-- **Bk**: Cl y. Ilu `Tl`, `ISBN` (uqu ), `Quy`, `AvlblQuy`, `SlfL`, `ublY`, f ky.
-- **BwR**: Tk bk l. Lk `SuI` `BkI`. C `IuD`, `DuD`, `RuD`, `Su`, `FAu`.
-- **Cy, Au, ubl**: Nlz bl f l.
-
-> **N C:** T b f **R Dl Bv** Bk l. Yu l Au, Cy, ubl f bk .
-
----
-
-##  G S
-
-### qu
-- **.NT 8 SDK** w ll.
-- **SQL** (bul w y Fwk C, l ll qu).
-- Ay ID lk Vul Su, VS C, R.
-
-### Ru Llly
-T lu llly:
-
-1. **Cl y & :**
- ```b
- l ://ub./ullk007/LMSy.
- LMSy
- 
- ```
-
-2. **Aly Db M:**
- ```b
- f b u
- ```
-
-3. **Ru l:**
- ```b
- u -- LMSy.Wb
- ```
-
-4. **A l:**
- O yu bw v `://ll:5005` `://ll:7091`.
-
-> **Dful A Au:** 
-> - **l**: `@l.`
-> - **w**: `A@123`
+**Design Patterns Implemented:**
+- **MVC (Model-View-Controller)**: Separates UI logic and HTTP handling.
+- **Repository Pattern**: Data access abstraction using `IRepository<T>` ensuring clean data layer separation.
+- **Service Layer**: Encapsulates business logic (`BookService`, `BorrowService`) to keep controllers lean.
+- **Dependency Injection**: Services and repositories are injected via the built-in DI container.
 
 ---
 
-##  Rl & Wkflw
+##  Database Schema & Entities
 
-Suy v **AS.NT C Iy**.
+The system uses **Entity Framework Core** with **SQLite**. The context is defined in `ApplicationDbContext.cs`.
 
-### Rl
-- **A**: C ll u, l, lbl fu.
-- **Lb**: Full l v lby l Bw Rqu.
-- **Su**: R-ly l. C qu u 5 bk.
+### Core Entities
+- **ApplicationUser**: Extends `IdentityUser`. Manages user profiles.
+- **Book**: Central entity. Includes `Title`, `ISBN` (unique index), `Quantity`, `AvailableQuantity`, `ShelfLocation`, `PublishedYear`, and foreign keys.
+- **BorrowRecord**: Tracks book loans. Links a `StudentId` to a `BookId`. Contains `IssueDate`, `DueDate`, `ReturnDate`, `Status`, and `FineAmount`.
+- **Category, Author, Publisher**: Normalization tables for cataloging.
 
-### Bw Wkflw
-1. **Rqu**: Su qu bk. Sy k vlbly, bw l, u f.
-2. **Iu**: Lb v qu. `AvlblQuy` .
-3. **Ru**: Lb k bk u. `AvlblQuy` .
-4. **F Clul**: If u `DuD`, y lul f f **10 u vu y**.
+> **Note on Constraints:** The database enforces **Restrict Delete Behavior** on Book relationships. You cannot delete an Author, Category, or Publisher if there are books tied to them.
 
 ---
 
-##  T Gu
+##  Getting Started
 
-T y l **U**, **Mq**, **FluA** f u u .
+### Prerequisites
+- **.NET 8 SDK** or newer installed.
+- **SQLite** (bundled with Entity Framework Core, no external installation required).
+- Any standard IDE like Visual Studio, VS Code, or Rider.
 
-### u T
-```b
- LMSy.T
- 
+### Running Locally
+To launch the project locally:
+
+1. **Clone the repository & restore dependencies:**
+   ```bash
+   git clone https://github.com/anshullakra007/LMSystem.git
+   cd LMSystem
+   dotnet restore
+   ```
+
+2. **Apply Database Migrations:**
+   ```bash
+   dotnet ef database update
+   ```
+
+3. **Run the application:**
+   ```bash
+   dotnet run --project LMSystem.Web
+   ```
+
+4. **Access the application:**
+   Open your browser and navigate to `http://localhost:5005` or `https://localhost:7091`.
+
+> **Default Admin Account:** 
+> - **Email**: `admin@example.com`
+> - **Password**: `Admin@123`
+
+---
+
+##  Roles & Workflows
+
+Security is managed via **ASP.NET Core Identity**.
+
+### Roles
+- **Admin**: Can manage all users, roles, and global configurations.
+- **Librarian**: Full control over the library catalog and managing Borrow Requests.
+- **Student**: Read-only access to the catalog. Can request up to 5 books.
+
+### Borrowing Workflow
+1. **Request**: Student requests a book. System checks availability, borrow limits, and unpaid fines.
+2. **Issue**: Librarian approves the request. `AvailableQuantity` decrements.
+3. **Return**: Librarian marks the book as returned. `AvailableQuantity` increments.
+4. **Fine Calculation**: If returned past the `DueDate`, the system calculates a fine of **10 units per overdue day**.
+
+---
+
+##  Testing Guide
+
+The system relies on **xUnit**, **Moq**, and **FluentAssertions** for automated unit testing.
+
+### Executing Tests
+```bash
+cd LMSystem.Tests
+dotnet test
 ```
 
-### Cv
-- **Cll**: Vl u, l u, .
-- **Sv**: Vl bu l, , .
-- **R**: u y Fwk C LINQ qu L fully .
+### Coverage
+- **Controllers**: Validates routing, logic execution, and constraints.
+- **Services**: Validates business logic, pagination, and data mapping.
+- **Repositories**: Ensures Entity Framework Core LINQ queries and Eager Loading are functionally correct.
 
 ---
 
-##  Fuu 
-- M SQL SQL Sv SQL f u ly.
-- Il l f f vu bk.
-- I y wy f f .
-- A B/QR f f ku.
+##  Future Enhancements
+- Migrate SQLite to SQL Server or PostgreSQL for production deployment.
+- Implement Email notifications for overdue books.
+- Integrate a payment gateway for fine processing.
+- Add Barcode/QR integration for faster checkout.
 
 ---
 
-*Dvl by Aul Ku.*
+*Developed by Anshul Kumar.*
 
 ---
 
-## Wy I bul ?
+## Why I built this ?
 
-**Su:** M l yl z qu lz Lby M Sy (LMS) w l l y.
-**Tk:** I full-k y l u u, vy k, bw l, u u- lul.
-**A:** I bu RSTful AI bk u w ll b. I l JWT-b u f A/U l. F bw l, I u SQL u vy u w ly yz, v w ull u bw ululy.
-**Rul:** T LMS flwlly, v u, u, ly lbl lu f vy , w y bly l l l-wl bu l .
+**Situation:** Managing digital or physical assets across an organization requires a centralized Library Management System (LMS) with strict access controls and transactional integrity.
+**Task:** I needed to design a full-stack system to handle user authentication, inventory tracking, borrowing logic, and automated due-date calculations.
+**Action:** I architected a robust RESTful API backend communicating with a relational database. I implemented JWT-based authentication for Admin/User roles. For the borrowing logic, I used SQL transactions to ensure that inventory counts were strictly synchronized, preventing race conditions when multiple users tried to borrow the same asset simultaneously.
+**Result:** The LMS operates flawlessly, providing a secure, concurrent, and highly scalable solution for inventory management, showcasing my ability to model complex real-world business logic into code.
