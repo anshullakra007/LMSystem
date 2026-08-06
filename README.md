@@ -1,6 +1,6 @@
 #  LMSystem - Library Management System
 
-> **LMSystem** is a full-featured Library Management System developed with **ASP.NET Core 8 MVC**. It handles the end-to-end process of managing physical library resources, including automated borrowing pipelines, fine calculations, and a robust Role-Based Access Control (RBAC) model distinguishing between administrators, library staff, and students.
+> **LMSystem**is a full-featured Library Management System developed with**ASP.NET Core 8 MVC**. It handles the end-to-end process of managing physical library resources, including automated borrowing pipelines, fine calculations, and a robust Role-Based Access Control (RBAC) model distinguishing between administrators, library staff, and students.
 
 ---
 
@@ -31,8 +31,7 @@ The solution is divided into two primary projects:
 1. `LMSystem.Web`: The main ASP.NET Core MVC web application.
 2. `LMSystem.Tests`: The xUnit testing project for controllers, services, and repositories.
 
-**Design Patterns Implemented:**
-- **MVC (Model-View-Controller)**: Separates UI logic and HTTP handling.
+**Design Patterns Implemented:**-**MVC (Model-View-Controller)**: Separates UI logic and HTTP handling.
 - **Repository Pattern**: Data access abstraction using `IRepository<T>` ensuring clean data layer separation.
 - **Service Layer**: Encapsulates business logic (`BookService`, `BorrowService`) to keep controllers lean.
 - **Dependency Injection**: Services and repositories are injected via the built-in DI container.
@@ -41,7 +40,7 @@ The solution is divided into two primary projects:
 
 ##  Database Schema & Entities
 
-The system uses **Entity Framework Core** with **SQLite**. The context is defined in `ApplicationDbContext.cs`.
+The system uses **Entity Framework Core**with**SQLite**. The context is defined in `ApplicationDbContext.cs`.
 
 ### Core Entities
 - **ApplicationUser**: Extends `IdentityUser`. Manages user profiles.
@@ -49,42 +48,37 @@ The system uses **Entity Framework Core** with **SQLite**. The context is define
 - **BorrowRecord**: Tracks book loans. Links a `StudentId` to a `BookId`. Contains `IssueDate`, `DueDate`, `ReturnDate`, `Status`, and `FineAmount`.
 - **Category, Author, Publisher**: Normalization tables for cataloging.
 
-> **Note on Constraints:** The database enforces **Restrict Delete Behavior** on Book relationships. You cannot delete an Author, Category, or Publisher if there are books tied to them.
+> **Note on Constraints:**The database enforces**Restrict Delete Behavior**on Book relationships. You cannot delete an Author, Category, or Publisher if there are books tied to them.
 
 ---
 
 ##  Getting Started
 
 ### Prerequisites
-- **.NET 8 SDK** or newer installed.
-- **SQLite** (bundled with Entity Framework Core, no external installation required).
+-**.NET 8 SDK**or newer installed.
+-**SQLite**(bundled with Entity Framework Core, no external installation required).
 - Any standard IDE like Visual Studio, VS Code, or Rider.
 
 ### Running Locally
 To launch the project locally:
 
-1. **Clone the repository & restore dependencies:**
-   ```bash
+1.**Clone the repository & restore dependencies:**```bash
    git clone https://github.com/anshullakra007/LMSystem.git
    cd LMSystem
    dotnet restore
    ```
 
-2. **Apply Database Migrations:**
-   ```bash
+2.**Apply Database Migrations:**```bash
    dotnet ef database update
    ```
 
-3. **Run the application:**
-   ```bash
+3.**Run the application:**```bash
    dotnet run --project LMSystem.Web
    ```
 
-4. **Access the application:**
-   Open your browser and navigate to `http://localhost:5005` or `https://localhost:7091`.
+4.**Access the application:**Open your browser and navigate to `http://localhost:5005` or `https://localhost:7091`.
 
-> **Default Admin Account:** 
-> - **Email**: `admin@example.com`
+>**Default Admin Account:**> -**Email**: `admin@example.com`
 > - **Password**: `Admin@123`
 
 ---
@@ -108,7 +102,7 @@ Security is managed via **ASP.NET Core Identity**.
 
 ##  Testing Guide
 
-The system relies on **xUnit**, **Moq**, and **FluentAssertions** for automated unit testing.
+The system relies on **xUnit**, **Moq**, and **FluentAssertions**for automated unit testing.
 
 ### Executing Tests
 ```bash
@@ -117,7 +111,7 @@ dotnet test
 ```
 
 ### Coverage
-- **Controllers**: Validates routing, logic execution, and constraints.
+-**Controllers**: Validates routing, logic execution, and constraints.
 - **Services**: Validates business logic, pagination, and data mapping.
 - **Repositories**: Ensures Entity Framework Core LINQ queries and Eager Loading are functionally correct.
 
@@ -137,7 +131,14 @@ dotnet test
 
 ## Why I built this ?
 
-**Situation:** Managing digital or physical assets across an organization requires a centralized Library Management System (LMS) with strict access controls and transactional integrity.
-**Task:** I needed to design a full-stack system to handle user authentication, inventory tracking, borrowing logic, and automated due-date calculations.
-**Action:** I architected a robust RESTful API backend communicating with a relational database. I implemented JWT-based authentication for Admin/User roles. For the borrowing logic, I used SQL transactions to ensure that inventory counts were strictly synchronized, preventing race conditions when multiple users tried to borrow the same asset simultaneously.
-**Result:** The LMS operates flawlessly, providing a secure, concurrent, and highly scalable solution for inventory management, showcasing my ability to model complex real-world business logic into code.
+### Situation
+Managing digital or physical assets across an organization requires a centralized Library Management System (LMS) with strict access controls and transactional integrity.
+
+### Task
+I needed to design a full-stack system to handle user authentication, inventory tracking, borrowing logic, and automated due-date calculations.
+
+### Action
+I architected a robust RESTful API backend communicating with a relational database. I implemented JWT-based authentication for Admin/User roles. For the borrowing logic, I used SQL transactions to ensure that inventory counts were strictly synchronized, preventing race conditions when multiple users tried to borrow the same asset simultaneously.
+
+### Result
+The LMS operates flawlessly, providing a secure, concurrent, and highly scalable solution for inventory management, showcasing my ability to model complex real-world business logic into code.
