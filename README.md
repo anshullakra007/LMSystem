@@ -134,21 +134,3 @@ dotnet test
 ---
 
 *Developed by Anshul Kumar.*
-
----
-
----
-
-## Why I built this ?
-
-### Situation
-Managing digital or physical assets across an organization requires a centralized Library Management System (LMS) with strict access controls and transactional integrity.
-
-### Task
-I needed to design a full-stack system to handle user authentication, inventory tracking, borrowing logic, and automated due-date calculations.
-
-### Action
-I architected a robust RESTful API backend communicating with a relational database. I implemented JWT-based authentication for Admin/User roles. For the borrowing logic, I used SQL transactions to ensure that inventory counts were strictly synchronized, preventing race conditions when multiple users tried to borrow the same asset simultaneously.
-
-### Result
-The LMS operates flawlessly, providing a secure, concurrent, and highly scalable solution for inventory management, showcasing my ability to model complex real-world business logic into code.
