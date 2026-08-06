@@ -1,4 +1,4 @@
-# 📚 LMSy - Lby M Sy
+#  LMSy - Lby M Sy
 
 ![AS.NT C](://.l./b/AS.NT%20C-8.0-512BD4?yl=f--b&l=)
 ![y Fwk C](://.l./b/y%20Fwk-C-35B3B?yl=f--b&l=u)
@@ -10,7 +10,7 @@
 
 ---
 
-## 📑 Tbl f C
+##  Tbl f C
 - [Fu](#-fu)
 - [Au & D ](#-u---)
 - [Db S & ](#-b---)
@@ -21,7 +21,7 @@
 
 ---
 
-## ✨ Fu
+##  Fu
 
 - **Au Bw Sy**: Rqu, v, u, u bk lly.
 - **Au F Clul**: Aully k vu lul f y.
@@ -31,7 +31,7 @@
 
 ---
 
-## 🏗 Au & D 
+##  Au & D 
 
 T lu v w y :
 1. `LMSy.Wb`: T AS.NT C MVC wb l.
@@ -45,7 +45,7 @@ T lu v w y :
 
 ---
 
-## 🗄 Db S & 
+##  Db S & 
 
 T y u **y Fwk C** w **SQL**. T f `AlDbC.`.
 
@@ -59,7 +59,7 @@ T y u **y Fwk C** w **SQL**. T f `AlDbC.`.
 
 ---
 
-## 🚀 G S
+##  G S
 
 ### qu
 - **.NT 8 SDK** w ll.
@@ -95,7 +95,7 @@ T lu llly:
 
 ---
 
-## 🔐 Rl & Wkflw
+##  Rl & Wkflw
 
 Suy v **AS.NT C Iy**.
 
@@ -112,7 +112,7 @@ Suy v **AS.NT C Iy**.
 
 ---
 
-## 🧪 T Gu
+##  T Gu
 
 T y l **U**, **Mq**, **FluA** f u u .
 
@@ -129,7 +129,7 @@ T y l **U**, **Mq**, **FluA** f u u .
 
 ---
 
-## 🔮 Fuu 
+##  Fuu 
 - M SQL SQL Sv SQL f u ly.
 - Il l f f vu bk.
 - I y wy f f .
