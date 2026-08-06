@@ -1,4 +1,4 @@
-#  LMSystem - Library Management System
+# LMSystem - Library Management System
 
 ## Why I built this ?
 
@@ -20,7 +20,7 @@ The LMS operates flawlessly, providing a secure, concurrent, and highly scalable
 
 ---
 
-##  Table of Contents
+## Table of Contents
 - [Features](#-features)
 - [Architecture & Design Patterns](#-architecture--design-patterns)
 - [Database Schema & Entities](#-database-schema--entities)
@@ -31,7 +31,7 @@ The LMS operates flawlessly, providing a secure, concurrent, and highly scalable
 
 ---
 
-##  Features
+## Features
 
 - Automated Borrowing System: Request, approve, issue, and return books seamlessly.
 - Automated Fine Calculation: Automatically tracks overdue items and calculates fines per day.
@@ -41,7 +41,7 @@ The LMS operates flawlessly, providing a secure, concurrent, and highly scalable
 
 ---
 
-##  Architecture & Design Patterns
+## Architecture & Design Patterns
 
 The solution is divided into two primary projects:
 1. `LMSystem.Web`: The main ASP.NET Core MVC web application.
@@ -55,7 +55,7 @@ Design Patterns Implemented:
 
 ---
 
-##  Database Schema & Entities
+## Database Schema & Entities
 
 The system uses Entity Framework Core with SQLite. The context is defined in `ApplicationDbContext.cs`.
 
@@ -69,7 +69,7 @@ The system uses Entity Framework Core with SQLite. The context is defined in `Ap
 
 ---
 
-##  Getting Started
+## Getting Started
 
 ### Prerequisites
 - .NET 8 SDK or newer installed.
@@ -105,7 +105,7 @@ To launch the project locally:
 
 ---
 
-##  Roles & Workflows
+## Roles & Workflows
 
 Security is managed via ASP.NET Core Identity.
 
@@ -122,7 +122,7 @@ Security is managed via ASP.NET Core Identity.
 
 ---
 
-##  Testing Guide
+## Testing Guide
 
 The system relies on xUnit, Moq, and FluentAssertions for automated unit testing.
 
@@ -139,7 +139,7 @@ dotnet test
 
 ---
 
-##  Future Enhancements
+## Future Enhancements
 - Migrate SQLite to SQL Server or PostgreSQL for production deployment.
 - Implement Email notifications for overdue books.
 - Integrate a payment gateway for fine processing.
