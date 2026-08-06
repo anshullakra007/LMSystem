@@ -143,14 +143,7 @@ dotnet test
 
 ## Why I built this ?
 
-**Situation:** 
-While building modern software applications, developing structured and scalable solutions is critical. The requirement was to build and maintain `LMSystem` to address specific technical challenges and provide a robust implementation.
-
-**Task:** 
-My goal was to engineer a reliable and efficient solution for `LMSystem`, ensuring clean architecture, maintainability, and alignment with project objectives (Library Management System developed with ASP.NET Core 8 MVC).
-
-**Action:** 
-I designed and implemented the core logic and project architecture, focusing on best practices in code organization and system design. I systematically tackled the problem by breaking down the requirements, writing modular code, and integrating necessary dependencies to bring the repository to life.
-
-**Result:** 
-The project successfully fulfilled its core requirements, serving as a functional codebase. It demonstrates a clear understanding of software engineering principles and provides a solid foundation for future scaling and feature additions.
+**Situation:** Managing digital or physical assets across an organization requires a centralized Library Management System (LMS) with strict access controls and transactional integrity.
+**Task:** I needed to design a full-stack system to handle user authentication, inventory tracking, borrowing logic, and automated due-date calculations.
+**Action:** I architected a robust RESTful API backend communicating with a relational database. I implemented JWT-based authentication for Admin/User roles. For the borrowing logic, I used SQL transactions to ensure that inventory counts were strictly synchronized, preventing race conditions when multiple users tried to borrow the same asset simultaneously.
+**Result:** The LMS operates flawlessly, providing a secure, concurrent, and highly scalable solution for inventory management, showcasing my ability to model complex real-world business logic into code.
